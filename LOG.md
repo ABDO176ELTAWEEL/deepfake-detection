@@ -1,6 +1,6 @@
 ## Week 1
 
-### Day 1 — 5/6/2026
+### Day 1 — 6/5/2026
 - Read reference papers (XceptionNet, MesoNet)
 - Created GitHub repository and project structure
 - Assigned team roles:
@@ -9,7 +9,7 @@
   - Student C: Testing & reports
 - Set up development environment (Google Colab)
 
-### Day 2 — 7/6/2026
+### Day 2 — 7/5/2026
 - Downloaded FaceForensics++ dataset (2.73GB)
 - Extracted 2000 frames from videos (1000 real, 1000 fake)
 - Applied preprocessing: resize to 224x224, normalize
