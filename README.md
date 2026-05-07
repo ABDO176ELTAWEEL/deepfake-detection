@@ -18,8 +18,13 @@ Binary classifier to detect AI-generated (deepfake) faces using CNN (MobileNetV2
 | Noise level 10 | 56.00% |
 | Noise level 25 | 58.25% |
 
+
 ## Dataset
 FaceForensics++ — 2000 frames (1000 real, 1000 fake)
+
+Source: [FaceForensics++ on Kaggle](https://www.kaggle.com/datasets/hungle3401/faceforensics)
+
+> Note: Dataset is not included in this repo due to size. Download from the link above.
 
 ## Project Structure
 deepfake-detection/
