@@ -1,0 +1,9 @@
+torch
+torchvision
+kagglehub
+opencv-python
+pillow
+matplotlib
+scikit-learn
+seaborn
+gradio
