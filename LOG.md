@@ -1,10 +1,8 @@
 # Development Log 
 Deepfake Face Detection
 **Project:** Deepfake Face Image Detection with Lightweight Convolutional Models  
-**Team:** Abdelrahman Ibrahim Kamal · Aya Noah · Esraa Mohamed — Group 3  
-**Course:** Deep Learning  
-
----
+**Team:** Abdelrahman Ibrahim Kamal · Aya Noah · Esraa Mohamed ( Group 3 )
+**Course:** CISC 867 Deep Learning S26 
 
 ## Week 1 
 Data & Preprocessing
@@ -28,13 +26,11 @@ Data & Preprocessing
 
 ### Key Decisions
 - Used **subject-level split** (first number of pair ID) after discovering that using the full video stem caused data leakage (Val AUC < 0.5)
-- Kept each manipulation method in a **separate folder** (`Deepfakes/`, `Face2Face/`, etc.) instead of a single `fake/` folder — enables per-method evaluation and cleaner 4-class extension
+- Kept each manipulation method in a **separate folder** (`Deepfakes/`, `Face2Face/`, etc.) instead of a single `fake/` folder, enables per-method evaluation and cleaner 4-class extension
 
 ### Issues Encountered
 - Initial `split_group = video_id` (full stem `033_097`) caused same face to appear in both train and val → model could not generalise → fixed to `subject_id = "033"`
 - `num_workers > 0` causes DataLoader crash on Windows → set to `0`
-
----
 
 ## Week 2 
 Binary Baseline Training
@@ -46,10 +42,10 @@ Binary Baseline Training
   - Backbone: MobileNetV2 pretrained on ImageNet
   - Classifier head: `Dropout(0.3) → Linear(1280→256) → ReLU → Dropout(0.2) → Linear(256→2)`
 - Two-stage transfer learning:
-  - **Stage 1** (5 epochs): freeze all features, train head only — LR = 1e-3
-  - **Stage 2** (up to 25 epochs): unfreeze last 4 feature blocks — LR = 1e-5
+  - **Stage 1** (5 epochs): freeze all features, train head only - LR = 1e-3
+  - **Stage 2** (up to 25 epochs): unfreeze last 4 feature blocks - LR = 1e-5
 - Applied `WeightedRandomSampler` to balance fake/real batches (4:1 imbalance)
-- Added `CrossEntropyLoss(weight=[4.0, 1.0])` — upweights minority real class
+- Added `CrossEntropyLoss(weight=[4.0, 1.0])` - upweights minority real class
 - Training augmentations: `RandomHorizontalFlip`, `RandomRotation(10°)`, `RandomAffine`, `ColorJitter`
 - Threshold tuning on validation set (39-point grid, 0.025 step)
 - Per-video evaluation: mean-pooled frame scores → final prediction
@@ -86,19 +82,17 @@ frames_per_video = 20
 
 *(Full numbers in midterm report Tables II–III)*
 
----
-
 ## Week 3 
 Robustness Experiments & Multi-class Extension
 **Dates:** Week 3  
-**Owners:** Student C (Esraa) — robustness · Student B (Aya) — multi-class
+**Owners:** Student C (Esraa) - robustness · Student B (Aya) - multi-class
 
 ### Robustness Work (deepfake_detection.ipynb)
 - Evaluated binary model under two corruption types:
   - **JPEG recompression**: quality ∈ {90, 70, 50, 30, 10}
   - **Gaussian noise**: σ ∈ {0.01, 0.03, 0.05, 0.10, 0.20}
 - Metrics per condition: Accuracy, Macro-F1, AUC-ROC
-- Key finding: non-monotonic JPEG behaviour — model partially recovers at Q=50 due to blocking artefact patterns that resemble deepfake traces
+- Key finding: non-monotonic JPEG behaviour - model partially recovers at Q=50 due to blocking artefact patterns that resemble deepfake traces
 
 ### Multi-class Work (deepfake_multiclass.ipynb)
 - Built **3-class fake-type classifier**: `Deepfakes`, `Face2Face`, `FaceSwap`
@@ -111,13 +105,11 @@ Robustness Experiments & Multi-class Extension
 - Robustness evaluation also applied to multi-class model
 
 ### Key Decisions
-- Used EfficientNet-B0 over MobileNetV2 for multi-class — better accuracy/size tradeoff
-- Added frequency branch inspired by Qi et al. (2020) — convolutional traces visible in DCT domain
+- Used EfficientNet-B0 over MobileNetV2 for multi-class - better accuracy/size tradeoff
+- Added frequency branch inspired by Qi et al. (2020) - convolutional traces visible in DCT domain
 - Kept `NeuralTextures` out of 3-class due to high visual similarity causing confusion
 
----
-
-## Week 4 — Evaluation, Figures & Report
+## Week 4 - Evaluation, Figures & Report
 **Dates:** Week 4  
 **All members**
 
@@ -131,7 +123,6 @@ Robustness Experiments & Multi-class Extension
 - Wrote and finalised midterm report (IEEE two-column format)
 - Submitted code as voluntary supplement with midterm
 
----
 
 ## Repository Structure
 ```
@@ -146,8 +137,6 @@ deepfake-detection/
 └── LOG.md                                           # This file
 ```
 
----
-
 ## Environment
 | Item | Detail |
 |------|--------|
@@ -159,10 +148,6 @@ deepfake-detection/
 | opencv-python | 4.8+ |
 | Hardware (local) | CPU only |
 | Hardware (Colab) | NVIDIA T4 / L4 |
-
----
-
-
 
 AI was **not** used to:
 - Generate experimental results or metric values
