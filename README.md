@@ -1,15 +1,13 @@
 # Deepfake Detection on FaceForensics++
 > A two-stage deep learning system for detecting and classifying facial manipulation using MobileNetV2 and EfficientNet-B0 on the FaceForensics++ benchmark dataset.
 
----
-
 ## 📋 Table of Contents
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [Dataset](#dataset)
 - [Notebooks](#notebooks)
-  - [Notebook 1 — Binary Detection](#notebook-1--binary-detection-real-vs-fake)
-  - [Notebook 2 — Manipulation Classifier](#notebook-2--manipulation-type-classifier-3-class)
+  - [Notebook 1 - Binary Detection](#notebook-1--binary-detection-real-vs-fake)
+  - [Notebook 2 - Manipulation Classifier](#notebook-2--manipulation-type-classifier-3-class)
 - [Baseline vs Final Binary Notebook](#-baseline-vs-final-binary-notebook)
 - [Architecture](#architecture)
 - [Training Strategy](#training-strategy)
@@ -19,8 +17,6 @@
 - [How to Run](#how-to-run)
 - [Design Decisions](#design-decisions)
 - [Limitations](#limitations)
-
----
 
 ## Overview
 
@@ -40,8 +36,6 @@ This project implements a **complete deepfake detection pipeline** built on top 
 - Video-level (group-level) evaluation in addition to frame-level
 - Robustness evaluation under JPEG compression and Gaussian noise
 - Grad-CAM visualizations to interpret model decisions
-
----
 
 ## Project Structure
 
@@ -126,7 +120,7 @@ val   ∩ test pairs: 0
 Frames are extracted using OpenCV with **Haar Cascade face detection**:
 1. Sample 20 frames uniformly across each video
 2. Detect the largest face with 40% padding
-3. Fall back to center square crop if no face detected
+3. Fall back to the center square crop if no face is detected
 4. Resize to 224 × 224 and save as JPEG
 
 ---
@@ -162,7 +156,7 @@ Custom Classifier:
 - **Stage 2 (up to 15 epochs):** Last 4 backbone blocks are unfrozen. Low learning rate (`1e-5`). Early stopping with patience=4.
 
 **Threshold Tuning:**
-Instead of using the default 0.5 threshold, the model searches 39 thresholds on the validation set to find the best accuracy and F1 separately. This is especially important given the class imbalance (1 real : 4 fake).
+Instead of using the default 0.5 threshold, the model searches 39 thresholds on the validation set to find the best accuracy and F1 separately. This is especially important given the class imbalance (1 real: 4 fake).
 
 **Ensemble:**
 Two MobileNetV2 variants are trained:
@@ -258,8 +252,6 @@ The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal 
 
 > **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`multiclass_fake.ipynb`), not in this intermediate version.
 
----
-
 ### 1. Dataset Scale  100 → 300 Videos, 10 → 20 Frames
 
 **Baseline:**
@@ -280,8 +272,6 @@ root_dir:    str = r'C:\...\FaceForensics_300'   # absolute path
 
 **Why it matters:** Tripling the videos and doubling the frames per video gives **6× more training data**. The baseline had too few samples to learn generalizable features — the model memorized identities instead of manipulation artifacts. At 300 videos, enough identity diversity exists that the model is forced to learn the actual manipulation signal.
 
----
-
 ### 2. Class Weights in Loss  Added
 
 **Baseline:** Unweighted cross-entropy. The 1:4 real/fake imbalance was handled only by `WeightedRandomSampler`:
@@ -295,7 +285,7 @@ class_w   = torch.tensor([4.0, 1.0], dtype=torch.float32).to(DEVICE)
 criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smoothing)
 ```
 
-**Why it matters:** `WeightedRandomSampler` balances at the batch-sampling level — each batch sees roughly equal real/fake counts. But the loss function still treats misclassifying real as equally costly as misclassifying fake. Adding `weight=[4.0, 1.0]` makes misclassifying a real frame 4× more costly in the loss, which directly reduces false positives (real frames predicted as fake) — the most common error in the baseline confusion matrix.
+**Why it matters:** `WeightedRandomSampler` balances at the batch-sampling level — each batch sees roughly equal real/fake counts. But the loss function still treats misclassifying real as equally costly as misclassifying fake. Adding `weight=[4.0, 1.0]` makes misclassifying a real frame 4× more costly in the loss, which directly reduces false positives (real frames predicted as fake), the most common error in the baseline confusion matrix.
 
 ---
 
@@ -349,7 +339,7 @@ The weighted ensemble wins on accuracy. v2 wins on AUC — useful when ranking i
 | **Confusion Matrix** | TP/TN/FP/FN with normalized % per cell, threshold annotated, metrics sidebar |
 | **Robustness Plot** | Accuracy/F1/AUC vs JPEG quality (q=80,60,40,20) and Gaussian noise (σ=5,10,20,40) |
 | **Error Analysis** | Top-16 highest-confidence wrong predictions shown as images with true/predicted labels |
-| **Grad-CAM** | Heatmap overlays on real and fake samples — shows which face regions trigger the decision |
+| **Grad-CAM** | Heatmap overlays on real and fake samples- shows which face regions trigger the decision |
 | **Ablation Study Table** | Side-by-side model comparison (v1, v2, simple ensemble, weighted ensemble) |
 
 > ⚠️ `plot_training_curves` is defined but **commented out** in the run cell — this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_fixed.ipynb`.
@@ -361,7 +351,7 @@ The weighted ensemble wins on accuracy. v2 wins on AUC — useful when ranking i
 Two helper cells added to locate and inspect saved checkpoints on disk:
 
 ```python
-# Cell 11 — find all .pth files recursively
+# Cell 11 - find all .pth files recursively
 results = glob.glob(os.path.join(search_dir, "**", "*.pth"), recursive=True)
 
 # Cell 12 — inspect classifier layer shapes of each checkpoint
@@ -449,12 +439,12 @@ y_mix = λ·y_i + (1-λ)·y_j
 With MixUp (expected behavior):
   Train acc: 62%  (trains on hard blended images)
   Val acc:   86%  (evaluates on clean images)
-  Gap:      +24%  ✅ MixUp working correctly
+  Gap:      +24%  MixUp working correctly
 
 Overfitting signal (NOT seen here):
   Train acc: 86%
   Val acc:   70%
-  Gap:      -16%  ⚠️ overfitting
+  Gap:      -16%  overfitting
 ```
 
 ### Threshold Tuning
@@ -479,8 +469,6 @@ video_pred  = argmax(video_score)
 ```
 
 This is the evaluation protocol used in the original FF++ paper and is more meaningful for real-world deployment.
-
----
 
 ## Results
 
@@ -516,8 +504,6 @@ Stage 2, Ep01: Val acc jumps to 73% (backbone unlocked)
 Stage 2, Ep09: Val acc 86%, F1 0.862, AUC 0.971 ← best
 ```
 
----
-
 ## Visualizations
 
 Both notebooks generate the following plots automatically:
@@ -532,8 +518,6 @@ Both notebooks generate the following plots automatically:
 | `error_analysis.png` | Top-N most confidently wrong predictions with true/predicted labels |
 | `gradcam.png` | Grad-CAM overlays showing which facial regions the model attends to |
 | `ablation_study.png` | Model comparison table with best model highlighted |
-
----
 
 ## Setup & Requirements
 
@@ -586,7 +570,7 @@ python download.py /path/to/save -d NeuralTextures -c c23 -t videos -n 300
 
 Or set `cfg.do_download = True` and the notebook will download automatically.
 
-### Step 2  Update the Path
+### Step 2:  Update the Path
 
 In both notebooks, update `root_dir` in the CFG to point to your downloaded dataset:
 ```python
@@ -601,7 +585,7 @@ Open `deepfake_detection.ipynb` and run all cells in order:
 3. Extract frames (skip if already done: `skip_extract=True`)
 4. Build index CSV
 5. Train (Stage 1 → Stage 2)
-6. Evaluate on test set
+6. Evaluate on the test set
 7. Robustness testing
 8. Ensemble experiments
 9. Generate all visualizations
@@ -610,7 +594,7 @@ Open `deepfake_detection.ipynb` and run all cells in order:
 
 Open `deepfake_multiclass.ipynb`. Frames from Notebook 1 are reused — set `skip_extract=True`. Run all cells in order.
 
-### Step 5  Run Inference on a New Image
+### Step 5:  Run Inference on a New Image
 
 **Binary (Real vs Fake):**
 ```python
@@ -650,7 +634,7 @@ Trade-off: Training is slow (expect 2–4 hours for multiclass). Every design ch
 
 ### Why `label_smoothing=0.10` in Multiclass?
 
-Face2Face and FaceSwap both perform face region replacement with smooth blending. A model trained with hard labels (0/1) quickly becomes overconfident on the wrong class. Label smoothing of 0.10 means the target distribution is:
+Face2Face and FaceSwap both perform face region replacement with smooth blending. A model trained with hard labels (0/1) quickly becomes overconfident in the wrong class. Label smoothing of 0.10 means the target distribution is:
 ```
 correct class: 0.90 + 0.10/3 ≈ 0.933
 other classes: 0.10/3        ≈ 0.033
@@ -659,7 +643,7 @@ This slows down overconfidence and improves calibration.
 
 ### Why MixUp `alpha=0.3` for Multiclass and `alpha=0.2` for Binary?
 
-Higher alpha = more aggressive interpolation = harder training task. The multiclass task needs stronger regularization because three-class boundaries are tighter. Binary real/fake separation is coarser so a lighter alpha (0.2) is sufficient.
+Higher alpha = more aggressive interpolation = harder training task. The multiclass task needs stronger regularization because the three-class boundaries are tighter. Binary real/fake separation is coarser so a lighter alpha (0.2) is sufficient.
 
 ### Why `WeightedRandomSampler`?
 
@@ -667,7 +651,7 @@ The dataset has 1 real video per 4 fake videos. Without correction, the model op
 
 ### Why Cosine LR Annealing over ReduceLROnPlateau?
 
-`ReduceLROnPlateau` reacts to plateaus — on fine-grained texture tasks these plateaus are often temporary and the model recovers naturally. Stopping the LR prematurely cuts learning short. Cosine annealing decays smoothly regardless, giving the model more opportunity to explore. `CosineAnnealingWarmRestarts` in Stage 2 adds periodic restarts to escape local minima.
+`ReduceLROnPlateau` reacts to plateaus — on fine-grained texture tasks, these plateaus are often temporary, and the model recovers naturally. Stopping the LR prematurely cuts learning short. Cosine annealing decays smoothly regardless, giving the model more opportunity to explore. `CosineAnnealingWarmRestarts` in Stage 2 adds periodic restarts to escape local minima.
 
 ### Why Progressive Unfreezing?
 
@@ -677,7 +661,7 @@ Starting with a frozen backbone and training only the head prevents the randomly
 
 ## Limitations
 
-- **CPU-only speed:** Training multiclass notebook takes 2–4 hours. Frame-by-frame robustness evaluation adds another 30–60 minutes.
+- **CPU-only speed:** Training a multiclass notebook takes 2–4 hours. Frame-by-frame robustness evaluation adds another 30–60 minutes.
 - **300 videos per class:** The full FF++ dataset has 1000 videos per class. Results with 300 videos are indicative but not state-of-the-art.
 - **No NeuralTextures in multiclass:** NeuralTextures was excluded to keep the 3-class problem tractable. Adding it would require more data and a harder decision boundary.
 - **Frame-level vs video-level gap:** The model is evaluated on extracted frames. Deployment on raw video requires integrating frame extraction (Haar cascade) into the inference pipeline.
@@ -697,8 +681,6 @@ If you use this project or the FaceForensics++ dataset in your work, please cite
   year      = {2019}
 }
 ```
-
----
 
 ## License
 
