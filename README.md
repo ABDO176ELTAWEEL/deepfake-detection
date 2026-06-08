@@ -29,7 +29,7 @@ This project implements a **complete deepfake detection pipeline** built on top 
 
 **Key highlights:**
 - Runs fully on **CPU** (no GPU required)
-- Uses the **official FF++ train/val/test splits** — no data leakage
+- Uses the **official FF++ train/val/test splits** - no data leakage
 - Two-stage transfer learning with progressive backbone unfreezing
 - Frequency-domain features via FFT for artifact detection
 - MixUp augmentation to reduce overfitting
@@ -137,7 +137,7 @@ Raw Videos → Frame Extraction → Index Building → Training → Threshold Tu
 
 #### Key Components
 
-**Model — MobileNetV2:**
+**Model - MobileNetV2:**
 ```
 Backbone (frozen in Stage 1)
     ↓
@@ -169,7 +169,7 @@ Their predictions are combined in two ways:
 
 ### Notebook 2  Manipulation Type Classifier (3-Class)
 
-**Goal:** Given a fake frame, identify which manipulation method was used — Deepfakes, Face2Face, or FaceSwap.
+**Goal:** Given a fake frame, identify which manipulation method was used Deepfakes, Face2Face, or FaceSwap.
 
 > Note: This is a **fake-only** classifier. Real frames are excluded because they carry no manipulation signal and would make the task trivial, while degrading class separation.
 
@@ -214,7 +214,7 @@ Each manipulation method leaves different artifacts in the frequency domain:
 
 A spatial CNN learns these slowly and imperfectly. The FrequencyBranch computes the FFT magnitude directly, applies log-scale compression (equivalent to log-mel in audio), and processes it with a lightweight 3-layer CNN (~50K params).
 
-**Loss Function — SoftCrossEntropyLoss:**
+**Loss Function- SoftCrossEntropyLoss:**
 
 A custom loss that accepts both hard integer labels and soft MixUp labels:
 ```python
@@ -230,7 +230,7 @@ With `label_smoothing=0.10` — higher than the binary task because Face2Face an
 
 ##  Baseline vs Final Binary Notebook
 
-The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same — based on direct code comparison between the two files.
+The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
 
 ### At a Glance
 
@@ -267,7 +267,7 @@ dataset_dir: str = os.path.join(BASE_DIR, 'dataset_300')
 root_dir:    str = r'C:\...\FaceForensics_300'   # absolute path
 ```
 
-**Why it matters:** Tripling the videos and doubling the frames per video gives **6× more training data**. The baseline had too few samples to learn generalizable features — the model memorized identities instead of manipulation artifacts. At 300 videos, enough identity diversity exists that the model is forced to learn the actual manipulation signal.
+**Why it matters:** Tripling the videos and doubling the frames per video gives **6× more training data**. The baseline had too few samples to learn generalizable features, the model memorized identities instead of manipulation artifacts. At 300 videos, enough identity diversity exists that the model is forced to learn the actual manipulation signal.
 
 ### 2. Class Weights in Loss  Added
 
@@ -282,21 +282,21 @@ class_w   = torch.tensor([4.0, 1.0], dtype=torch.float32).to(DEVICE)
 criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smoothing)
 ```
 
-**Why it matters:** `WeightedRandomSampler` balances at the batch-sampling level — each batch sees roughly equal real/fake counts. But the loss function still treats misclassifying real as equally costly as misclassifying fake. Adding `weight=[4.0, 1.0]` makes misclassifying a real frame 4× more costly in the loss, which directly reduces false positives (real frames predicted as fake), the most common error in the baseline confusion matrix.
+**Why it matters:** `WeightedRandomSampler` balances at the batch-sampling level- each batch sees roughly equal real/fake counts. But the loss function still treats misclassifying real as equally costly as misclassifying fake. Adding `weight=[4.0, 1.0]` makes misclassifying a real frame 4× more costly in the loss, which directly reduces false positives (real frames predicted as fake), the most common error in the baseline confusion matrix.
 
 ---
 
-### 3. Ensemble (v1 + v2) — Added
+### 3. Ensemble (v1 + v2) - Added
 
 **Baseline:** Single model only  one architecture, one checkpoint.
 
 **Final:** Two MobileNetV2 variants trained separately and combined:
 
 ```python
-# v1 — simple head (trained on ~50 videos, loaded from external checkpoint)
+# v1 : simple head (trained on ~50 videos, loaded from external checkpoint)
 classifier: Dropout(0.2) → Linear(1280 → 2)
 
-# v2 — deep head (trained on 300 videos, current session)
+# v2 : deep head (trained on 300 videos, current session)
 classifier: Dropout(0.3) → Linear(1280 → 256) → ReLU → Dropout(0.2) → Linear(256 → 2)
 ```
 
@@ -321,11 +321,11 @@ Simple Ensemble             73.80%   F1 0.701   AUC 0.792
 Weighted Ensemble           74.06%   F1 0.707   AUC 0.796
 ```
 
-The weighted ensemble wins on accuracy. v2 wins on AUC — useful when ranking is more important than a hard threshold.
+The weighted ensemble wins on accuracy. v2 wins on AUC, useful when ranking is more important than a hard threshold.
 
 ---
 
-### 4. Visualizations — None → 5 Plots
+### 4. Visualizations - None → 5 Plots
 
 **Baseline:** Only a printed robustness table (`print` statements), no saved figures.
 
@@ -339,19 +339,19 @@ The weighted ensemble wins on accuracy. v2 wins on AUC — useful when ranking i
 | **Grad-CAM** | Heatmap overlays on real and fake samples- shows which face regions trigger the decision |
 | **Ablation Study Table** | Side-by-side model comparison (v1, v2, simple ensemble, weighted ensemble) |
 
-> ⚠️ `plot_training_curves` is defined but **commented out** in the run cell — this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_fixed.ipynb`.
+>  `plot_training_curves` is defined but **commented out** in the run cell - this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_fixed.ipynb`.
 
 ---
 
-### 5. Model Search Utility — Added
+### 5. Model Search Utility - Added
 
 Two helper cells added to locate and inspect saved checkpoints on disk:
 
 ```python
-# Cell 11 - find all .pth files recursively
+# Cell 11: find all .pth files recursively
 results = glob.glob(os.path.join(search_dir, "**", "*.pth"), recursive=True)
 
-# Cell 12 — inspect classifier layer shapes of each checkpoint
+# Cell 12: inspect classifier layer shapes of each checkpoint
 state = torch.load(path, map_location='cpu')
 classifier_keys = [k for k in state.keys() if 'classifier' in k]
 ```
@@ -362,7 +362,7 @@ This was added because loading v1 from a different folder required verifying its
 
 ### What Was NOT Changed (Same as Baseline)
 
-These properties are **identical** in both versions — worth noting because they are common points of confusion:
+These properties are **identical** in both versions, worth noting because they are common points of confusion:
 
 | Property | Value in Both |
 |---|---|
@@ -374,7 +374,7 @@ These properties are **identical** in both versions — worth noting because the
 | `patience` | 4 |
 | `num_workers` | 0 |
 
-These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` addresses — adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
+These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` addresses, adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
 
 ---
 
@@ -408,11 +408,11 @@ deepfake_multiclass.ipynb           ← Final
 | CPU inference speed | Fast | Slightly slower |
 | Suitable for fine-grained texture | ❌ | ✅ |
 
-EfficientNet-B0's compound scaling makes it significantly better at detecting subtle texture differences — exactly what separates Face2Face from FaceSwap at the blending boundary level.
+EfficientNet-B0's compound scaling makes it significantly better at detecting subtle texture differences exactly what separates Face2Face from FaceSwap at the blending boundary level.
 
 ### Why MobileNetV2 for Binary?
 
-The binary task (real vs fake) is coarser — it doesn't need to discriminate between manipulation types, just detect the presence of any manipulation. MobileNetV2 is faster to train on CPU and sufficient for this task.
+The binary task (real vs fake) is coarser, it doesn't need to discriminate between manipulation types, just detect the presence of any manipulation. MobileNetV2 is faster to train on CPU and sufficient for this task.
 
 ---
 
@@ -430,7 +430,7 @@ y_mix = λ·y_i + (1-λ)·y_j
 **Why it's used here:**
 - Face2Face and FaceSwap are visually similar → hard labels cause overconfident wrong predictions
 - MixUp forces smooth decision boundaries between classes
-- Side effect: `train_acc < val_acc` — this is expected and healthy, not underfitting
+- Side effect: `train_acc < val_acc` this is expected and healthy, not underfitting
 
 ```
 With MixUp (expected behavior):
