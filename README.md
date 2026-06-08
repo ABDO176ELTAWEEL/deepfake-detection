@@ -1,7 +1,7 @@
 # Deepfake Detection on FaceForensics++
 > A two-stage deep learning system for detecting and classifying facial manipulation using MobileNetV2 and EfficientNet-B0 on the FaceForensics++ benchmark dataset.
 
-## 📋 Table of Contents
+## Table of Contents
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [Dataset](#dataset)
@@ -165,8 +165,6 @@ Their predictions are combined in two ways:
 - **Simple ensemble:** `(p_v1 + p_v2) / 2`
 - **Weighted ensemble:** Weights assigned proportional to validation AUC
 
----
-
 ### Notebook 2  Manipulation Type Classifier (3-Class)
 
 **Goal:** Given a fake frame, identify which manipulation method was used Deepfakes, Face2Face, or FaceSwap.
@@ -226,8 +224,6 @@ With `label_smoothing=0.10` - higher than the binary task because Face2Face and 
 - **Stage 1 (5 epochs):** Head + FrequencyBranch trained. EfficientNet backbone frozen. Cosine LR annealing.
 - **Stage 2 (up to 25 epochs):** Last 3 EfficientNet blocks unfrozen. 10× lower LR. CosineAnnealingWarmRestarts. Early stopping with patience=6.
 
----
-
 ##  Baseline vs Final Binary Notebook
 
 The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
@@ -284,8 +280,6 @@ criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smooth
 
 **Why it matters:** `WeightedRandomSampler` balances at the batch-sampling level- each batch sees roughly equal real/fake counts. But the loss function still treats misclassifying real as equally costly as misclassifying fake. Adding `weight=[4.0, 1.0]` makes misclassifying a real frame 4× more costly in the loss, which directly reduces false positives (real frames predicted as fake), the most common error in the baseline confusion matrix.
 
----
-
 ### 3. Ensemble (v1 + v2) - Added
 
 **Baseline:** Single model only  one architecture, one checkpoint.
@@ -323,8 +317,6 @@ Weighted Ensemble           74.06%   F1 0.707   AUC 0.796
 
 The weighted ensemble wins on accuracy. v2 wins on AUC, useful when ranking is more important than a hard threshold.
 
----
-
 ### 4. Visualizations - None → 5 Plots
 
 **Baseline:** Only a printed robustness table (`print` statements), no saved figures.
@@ -341,8 +333,6 @@ The weighted ensemble wins on accuracy. v2 wins on AUC, useful when ranking is m
 
 >  `plot_training_curves` is defined but **commented out** in the run cell - this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_fixed.ipynb`.
 
----
-
 ### 5. Model Search Utility - Added
 
 Two helper cells added to locate and inspect saved checkpoints on disk:
@@ -357,8 +347,6 @@ classifier_keys = [k for k in state.keys() if 'classifier' in k]
 ```
 
 This was added because loading v1 from a different folder required verifying its architecture before building the matching `build_model_v1()` function.
-
----
 
 ### What Was NOT Changed (Same as Baseline)
 
@@ -376,8 +364,6 @@ These properties are **identical** in both versions, worth noting because they a
 
 These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` addresses, adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
 
----
-
 ### Three-Version Evolution Summary
 
 ```
@@ -392,8 +378,6 @@ deepfake_multiclass.ipynb           ← Final
                 label_smoothing=0.10, gap monitor,
                 dynamic ablation table
 ```
-
----
 
 ## Architecture
 
