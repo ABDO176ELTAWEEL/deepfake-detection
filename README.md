@@ -167,7 +167,7 @@ Their predictions are combined in two ways:
 
 ### Notebook 2  Manipulation Type Classifier (3-Class)
 
-**Goal:** Given a fake frame, identify which manipulation method was used Deepfakes, Face2Face, or FaceSwap.
+**Goal:** Given a fake frame, identify which manipulation method was used: Deepfakes, Face2Face, or FaceSwap.
 
 > Note: This is a **fake-only** classifier. Real frames are excluded because they carry no manipulation signal and would make the task trivial, while degrading class separation.
 
@@ -218,7 +218,7 @@ A custom loss that accepts both hard integer labels and soft MixUp labels:
 ```python
 loss = -(soft_targets * log_softmax(logits)).sum(dim=1).mean()
 ```
-With `label_smoothing=0.10` - higher than the binary task because Face2Face and FaceSwap are visually similar.
+With `label_smoothing=0.10` - higher than the binary task, because Face2Face and FaceSwap are visually similar.
 
 **Two-Stage Training:**
 - **Stage 1 (5 epochs):** Head + FrequencyBranch trained. EfficientNet backbone frozen. Cosine LR annealing.
