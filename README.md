@@ -241,7 +241,7 @@ The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal 
 | Error analysis plot | ✖️ | ✅ |
 | Grad-CAM plot | ✖️ | ✅ |
 | Ablation study table | ✖️ | ✅ *(hardcoded numbers)* |
-| Model search utility | ✖️ | ✅ |
+| Model search utility | ✖️ | ✅|
 
 > **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`multiclass_fake.ipynb`), not in this intermediate version.
 
