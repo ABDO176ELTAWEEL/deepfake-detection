@@ -2,7 +2,7 @@
 Deepfake Face Detection
 **Project:** Deepfake Face Image Detection with Lightweight Convolutional Models  
 **Team:** Abdelrahman Ibrahim Kamal · Aya Noah · Esraa Mohamed — Group 3  
-**Course:** Computer Vision / Deep Learning  
+**Course:** Deep Learning  
 
 ---
 
