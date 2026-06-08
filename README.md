@@ -106,7 +106,7 @@ val.json    →   90 pairs  →  used for validation + threshold tuning
 test.json   →   90 pairs  →  used for final evaluation only
 ```
 
-**Real videos** are assigned to splits based on whether their ID appears in the split's pair list. This ensures zero video-level overlap between splits — a critical requirement for unbiased evaluation.
+**Real videos** are assigned to splits based on whether their ID appears in the split's pair list. This ensures zero video-level overlap between splits: a critical requirement for unbiased evaluation.
 
 ```python
 # Leakage check output (should always be 0)
@@ -122,8 +122,6 @@ Frames are extracted using OpenCV with **Haar Cascade face detection**:
 2. Detect the largest face with 40% padding
 3. Fall back to the center square crop if no face is detected
 4. Resize to 224 × 224 and save as JPEG
-
----
 
 ## Notebooks
 
@@ -173,10 +171,9 @@ Their predictions are combined in two ways:
 
 **Goal:** Given a fake frame, identify which manipulation method was used — Deepfakes, Face2Face, or FaceSwap.
 
-> Note: This is a **fake-only** classifier. Real frames are excluded because they carry no manipulation signal and would make the task trivially easier while hurting class separation.
+> Note: This is a **fake-only** classifier. Real frames are excluded because they carry no manipulation signal and would make the task trivial, while degrading class separation.
 
 #### Pipeline
-
 ```
 Fake Frames (3 classes) → Index Building → Training → Group-Level Eval → Robustness Testing
 ```
