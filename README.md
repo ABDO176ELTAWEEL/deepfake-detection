@@ -638,8 +638,6 @@ The dataset has 1 real video per 4 fake videos. Without correction, the model op
 
 Starting with a frozen backbone and training only the head prevents the randomly initialized head from sending large gradients into the pretrained backbone during early training. Once the head stabilizes (Stage 1), unfreezing the last blocks allows fine-tuning of high-level features with a much lower learning rate (10× reduction).
 
----
-
 ## Limitations
 
 - **CPU-only speed:** Training a multiclass notebook takes 2–4 hours. Frame-by-frame robustness evaluation adds another 30–60 minutes.
@@ -647,8 +645,6 @@ Starting with a frozen backbone and training only the head prevents the randomly
 - **No NeuralTextures in multiclass:** NeuralTextures was excluded to keep the 3-class problem tractable. Adding it would require more data and a harder decision boundary.
 - **Frame-level vs video-level gap:** The model is evaluated on extracted frames. Deployment on raw video requires integrating frame extraction (Haar cascade) into the inference pipeline.
 - **Compression sensitivity:** As shown in the robustness plots, performance degrades under heavy JPEG compression (q=20) and high Gaussian noise (σ=40). Real-world social media videos are typically at q=80+, which the model handles well.
-
----
 
 ## Citation
 
