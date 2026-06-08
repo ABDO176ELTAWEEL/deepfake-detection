@@ -390,7 +390,7 @@ deepfake_multiclass.ipynb           ← Final
 | Texture sensitivity | Medium | High |
 | Compound scaling | No | Yes (depth + width + resolution) |
 | CPU inference speed | Fast | Slightly slower |
-| Suitable for fine-grained texture | ❌ | ✅ |
+| Suitable for fine-grained texture | ✖️ | ✅ |
 
 EfficientNet-B0's compound scaling makes it significantly better at detecting subtle texture differences exactly what separates Face2Face from FaceSwap at the blending boundary level.
 
