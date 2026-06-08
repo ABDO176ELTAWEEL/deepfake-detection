@@ -1,4 +1,4 @@
-# 🎭 Deepfake Detection on FaceForensics++
+# Deepfake Detection on FaceForensics++
 > A two-stage deep learning system for detecting and classifying facial manipulation using MobileNetV2 and EfficientNet-B0 on the FaceForensics++ benchmark dataset.
 
 ---
@@ -133,7 +133,7 @@ Frames are extracted using OpenCV with **Haar Cascade face detection**:
 
 ## Notebooks
 
-### Notebook 1 — Binary Detection (Real vs Fake)
+### Notebook 1  Binary Detection (Real vs Fake)
 
 **Goal:** Classify any video frame as either real (authentic) or fake (manipulated by any method).
 
@@ -166,8 +166,8 @@ Instead of using the default 0.5 threshold, the model searches 39 thresholds on 
 
 **Ensemble:**
 Two MobileNetV2 variants are trained:
-- `v1` — simple head (Dropout → Linear → 2)
-- `v2` — deep head (Dropout → Linear(256) → ReLU → Dropout → Linear(2))
+- `v1`  simple head (Dropout → Linear → 2)
+- `v2`  deep head (Dropout → Linear(256) → ReLU → Dropout → Linear(2))
 
 Their predictions are combined in two ways:
 - **Simple ensemble:** `(p_v1 + p_v2) / 2`
@@ -175,7 +175,7 @@ Their predictions are combined in two ways:
 
 ---
 
-### Notebook 2 — Manipulation Type Classifier (3-Class)
+### Notebook 2  Manipulation Type Classifier (3-Class)
 
 **Goal:** Given a fake frame, identify which manipulation method was used — Deepfakes, Face2Face, or FaceSwap.
 
@@ -189,7 +189,7 @@ Fake Frames (3 classes) → Index Building → Training → Group-Level Eval →
 
 #### Key Components
 
-**Model — EfficientNet-B0 + FrequencyBranch:**
+**Model  EfficientNet-B0 + FrequencyBranch:**
 
 ```
 Input Image (224×224×3)
@@ -214,7 +214,7 @@ Input Image (224×224×3)
             Linear(512 → 3)
 ```
 
-**FrequencyBranch — Why it matters:**
+**FrequencyBranch  Why it matters:**
 
 Each manipulation method leaves different artifacts in the frequency domain:
 - **Deepfakes** (GAN-based): periodic patterns from the decoder upsampling
@@ -237,7 +237,7 @@ With `label_smoothing=0.10` — higher than the binary task because Face2Face an
 
 ---
 
-## 🔬 Baseline vs Final Binary Notebook
+##  Baseline vs Final Binary Notebook
 
 The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same — based on direct code comparison between the two files.
 
@@ -260,7 +260,7 @@ The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal 
 
 ---
 
-### 1. Dataset Scale — 100 → 300 Videos, 10 → 20 Frames
+### 1. Dataset Scale  100 → 300 Videos, 10 → 20 Frames
 
 **Baseline:**
 ```python
@@ -282,7 +282,7 @@ root_dir:    str = r'C:\...\FaceForensics_300'   # absolute path
 
 ---
 
-### 2. Class Weights in Loss — Added
+### 2. Class Weights in Loss  Added
 
 **Baseline:** Unweighted cross-entropy. The 1:4 real/fake imbalance was handled only by `WeightedRandomSampler`:
 ```python
@@ -301,7 +301,7 @@ criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smooth
 
 ### 3. Ensemble (v1 + v2) — Added
 
-**Baseline:** Single model only — one architecture, one checkpoint.
+**Baseline:** Single model only  one architecture, one checkpoint.
 
 **Final:** Two MobileNetV2 variants trained separately and combined:
 
@@ -319,7 +319,7 @@ p_ens = (p_v1 + p_v2) / 2
 threshold_ens, _, _ = tune_threshold(y_val, p_val_ens)
 ```
 
-**Weighted Ensemble — weights from val AUC:**
+**Weighted Ensemble  weights from val AUC:**
 ```python
 w1 = auc_v1 / (auc_v1 + auc_v2)   # ≈ 0.452
 w2 = auc_v2 / (auc_v1 + auc_v2)   # ≈ 0.548
@@ -573,7 +573,7 @@ print(torch.cuda.is_available())  # False is fine — CPU-only mode
 
 ## How to Run
 
-### Step 1 — Prepare the Dataset
+### Step 1  Prepare the Dataset
 
 Download FaceForensics++ videos using the official script:
 ```bash
@@ -586,14 +586,14 @@ python download.py /path/to/save -d NeuralTextures -c c23 -t videos -n 300
 
 Or set `cfg.do_download = True` and the notebook will download automatically.
 
-### Step 2 — Update the Path
+### Step 2  Update the Path
 
 In both notebooks, update `root_dir` in the CFG to point to your downloaded dataset:
 ```python
 root_dir: str = r'C:\path\to\your\FaceForensics_300'
 ```
 
-### Step 3 — Run Notebook 1 (Binary)
+### Step 3  Run Notebook 1 (Binary)
 
 Open `deepfake_detection.ipynb` and run all cells in order:
 1. Imports and config
@@ -606,11 +606,11 @@ Open `deepfake_detection.ipynb` and run all cells in order:
 8. Ensemble experiments
 9. Generate all visualizations
 
-### Step 4 — Run Notebook 2 (Multiclass)
+### Step 4  Run Notebook 2 (Multiclass)
 
 Open `deepfake_multiclass.ipynb`. Frames from Notebook 1 are reused — set `skip_extract=True`. Run all cells in order.
 
-### Step 5 — Run Inference on a New Image
+### Step 5  Run Inference on a New Image
 
 **Binary (Real vs Fake):**
 ```python
