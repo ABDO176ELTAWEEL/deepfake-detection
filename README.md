@@ -220,7 +220,7 @@ A custom loss that accepts both hard integer labels and soft MixUp labels:
 ```python
 loss = -(soft_targets * log_softmax(logits)).sum(dim=1).mean()
 ```
-With `label_smoothing=0.10` — higher than the binary task because Face2Face and FaceSwap are visually similar.
+With `label_smoothing=0.10` - higher than the binary task because Face2Face and FaceSwap are visually similar.
 
 **Two-Stage Training:**
 - **Stage 1 (5 epochs):** Head + FrequencyBranch trained. EfficientNet backbone frozen. Cosine LR annealing.
@@ -458,7 +458,7 @@ Two thresholds are saved: one optimizing accuracy, one optimizing Macro-F1.
 
 ### Group-Level Evaluation
 
-Frame-level metrics can be misleading — a single hard frame can lower the score unfairly. Video-level evaluation aggregates frame probabilities per video:
+Frame-level metrics can be misleading - a single hard frame can lower the score unfairly. Video-level evaluation aggregates frame probabilities per video:
 
 ```python
 video_score = mean(frame_probs)   # average over all frames
@@ -541,12 +541,12 @@ pip install torch torchvision opencv-python scikit-learn pandas numpy pillow mat
 ```python
 import torch
 print(torch.__version__)          # should be >= 1.13 for EfficientNet
-print(torch.cuda.is_available())  # False is fine — CPU-only mode
+print(torch.cuda.is_available())  # False is fine - CPU-only mode
 ```
 
 ### Windows Notes
 
-- Set `num_workers = 0` in CFG (already done) — Windows does not support multiprocessing in DataLoader
+- Set `num_workers = 0` in CFG (already done) - Windows does not support multiprocessing in DataLoader
 - Use raw strings for paths: `r"C:\Users\..."` 
 - If you see `RuntimeError: DataLoader worker` errors, confirm `num_workers=0`
 
@@ -589,7 +589,7 @@ Open `deepfake_detection.ipynb` and run all cells in order:
 
 ### Step 4  Run Notebook 2 (Multiclass)
 
-Open `deepfake_multiclass.ipynb`. Frames from Notebook 1 are reused — set `skip_extract=True`. Run all cells in order.
+Open `deepfake_multiclass.ipynb`. Frames from Notebook 1 are reused - set `skip_extract=True`. Run all cells in order.
 
 ### Step 5:  Run Inference on a New Image
 
@@ -627,7 +627,7 @@ predict_manipulation(
 
 The notebooks are designed to run on any machine without a GPU. This was a deliberate constraint to make the project reproducible by anyone.
 
-Trade-off: Training is slow (expect 2–4 hours for multiclass). Every design choice — model size, batch size, num_workers — was made with CPU in mind.
+Trade-off: Training is slow (expect 2–4 hours for multiclass). Every design choice - model size, batch size, num_workers - was made with CPU in mind.
 
 ### Why `label_smoothing=0.10` in Multiclass?
 
@@ -640,7 +640,7 @@ This slows down overconfidence and improves calibration.
 
 ### Why MixUp `alpha=0.3` for Multiclass and `alpha=0.2` for Binary?
 
-Higher alpha = more aggressive interpolation = harder training task. The multiclass task needs stronger regularization because the three-class boundaries are tighter. Binary real/fake separation is coarser so a lighter alpha (0.2) is sufficient.
+Higher alpha = more aggressive interpolation = harder training task. The multiclass task needs stronger regularization because the three-class boundaries are tighter. Binary real/fake separation is coarser, so a lighter alpha (0.2) is sufficient.
 
 ### Why `WeightedRandomSampler`?
 
@@ -648,7 +648,7 @@ The dataset has 1 real video per 4 fake videos. Without correction, the model op
 
 ### Why Cosine LR Annealing over ReduceLROnPlateau?
 
-`ReduceLROnPlateau` reacts to plateaus — on fine-grained texture tasks, these plateaus are often temporary, and the model recovers naturally. Stopping the LR prematurely cuts learning short. Cosine annealing decays smoothly regardless, giving the model more opportunity to explore. `CosineAnnealingWarmRestarts` in Stage 2 adds periodic restarts to escape local minima.
+`ReduceLROnPlateau` reacts to plateaus - on fine-grained texture tasks, these plateaus are often temporary, and the model recovers naturally. Stopping the LR prematurely cuts learning short. Cosine annealing decays smoothly regardless, giving the model more opportunity to explore. `CosineAnnealingWarmRestarts` in Stage 2 adds periodic restarts to escape local minima.
 
 ### Why Progressive Unfreezing?
 
@@ -681,4 +681,4 @@ If you use this project or the FaceForensics++ dataset in your work, please cite
 
 ## License
 
-This project is for research and educational purposes. The FaceForensics++ dataset requires signing an agreement with the original authors — see [their repository](https://github.com/ondyari/FaceForensics) for access details.
+This project is for research and educational purposes. The FaceForensics++ dataset requires signing an agreement with the original authors - see [their repository](https://github.com/ondyari/FaceForensics) for access details.
