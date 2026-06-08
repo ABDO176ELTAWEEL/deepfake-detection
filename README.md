@@ -396,7 +396,7 @@ EfficientNet-B0's compound scaling makes it significantly better at detecting su
 
 ### Why MobileNetV2 for Binary?
 
-The binary task (real vs fake) is coarser, it doesn't need to discriminate between manipulation types, just detect the presence of any manipulation. MobileNetV2 is faster to train on CPU and sufficient for this task.
+The binary task (real vs fake) is coarser; it doesn't need to discriminate between manipulation types, just detect the presence of any manipulation. MobileNetV2 is faster to train on CPU and sufficient for this task.
 
 ---
 
@@ -414,7 +414,7 @@ y_mix = λ·y_i + (1-λ)·y_j
 **Why it's used here:**
 - Face2Face and FaceSwap are visually similar → hard labels cause overconfident wrong predictions
 - MixUp forces smooth decision boundaries between classes
-- Side effect: `train_acc < val_acc` this is expected and healthy, not underfitting
+- Side effect: `train_acc < val_acc,` this is expected and healthy, not underfitting
 
 ```
 With MixUp (expected behavior):
@@ -449,7 +449,7 @@ video_score = mean(frame_probs)   # average over all frames
 video_pred  = argmax(video_score)
 ```
 
-This is the evaluation protocol used in the original FF++ paper and is more meaningful for real-world deployment.
+This evaluation protocol, used in the original FF++ paper, is more meaningful for real-world deployment.
 
 ## Results
 
@@ -484,7 +484,6 @@ Stage 1: Val acc 44% → 64% (head + freq branch only)
 Stage 2, Ep01: Val acc jumps to 73% (backbone unlocked)
 Stage 2, Ep09: Val acc 86%, F1 0.862, AUC 0.971 ← best
 ```
-
 ## Visualizations
 
 Both notebooks generate the following plots automatically:
@@ -533,8 +532,6 @@ print(torch.cuda.is_available())  # False is fine - CPU-only mode
 - Set `num_workers = 0` in CFG (already done) - Windows does not support multiprocessing in DataLoader
 - Use raw strings for paths: `r"C:\Users\..."` 
 - If you see `RuntimeError: DataLoader worker` errors, confirm `num_workers=0`
-
----
 
 ## How to Run
 
@@ -602,8 +599,6 @@ predict_manipulation(
 # Face2Face           9.1%  ██
 # FaceSwap            3.6%  █
 ```
-
----
 
 ## Design Decisions
 
