@@ -249,20 +249,14 @@ The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal 
 | Frames per video | **10** | **20** |
 | Total training frames | ~5,000 | ~30,000 |
 | `label_smoothing` | 0.05 | 0.05 *(unchanged)* |
-| MixUp augmentation | ❌ | ❌ *(unchanged)* |
-| Augmentation pipeline | Light (3 transforms) | Light (3 transforms) *(unchanged)* |
 | Class weights in loss | ❌ | ✅ `[4.0, 1.0]` |
 | Ensemble (v1 + v2) | ❌ | ✅ simple + weighted |
-| Train/Val gap monitor | ❌ | ❌ *(unchanged)* |
-| Training history dict | ❌ | ❌ *(training_curves commented out)* |
-| Confusion matrix plot | ❌ | ✅ |
-| Robustness plot | ❌ | ✅ |
 | Error analysis plot | ❌ | ✅ |
 | Grad-CAM plot | ❌ | ✅ |
 | Ablation study table | ❌ | ✅ *(hardcoded numbers)* |
 | Model search utility | ❌ | ✅ |
 
-> **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`deepfake_detection_fixed.ipynb`), not in this intermediate version.
+> **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`multiclass_fake.ipynb`), not in this intermediate version.
 
 ---
 
@@ -387,9 +381,7 @@ These properties are **identical** in both versions — worth noting because the
 |---|---|
 | `label_smoothing` | 0.05 |
 | Augmentation pipeline | Resize → Flip → ColorJitter only |
-| MixUp | Not present |
 | Training loop | No gap monitor, no MixUp |
-| `history` dict | Not saved (training curves unavailable) |
 | Model architecture | MobileNetV2, same classifier structure |
 | Stage 1/2 LR | `1e-3` / `1e-5` |
 | `patience` | 4 |
@@ -408,7 +400,7 @@ deepfake_detection_local_windows.ipynb   ← Baseline
 deepfake_detection.ipynb                 ← Intermediate (this file)
     │  Changes: class weights, ensemble, 5 visualizations
     │
-deepfake_detection_fixed.ipynb           ← Final
+deepfake_multiclass.ipynb           ← Final
        Changes: MixUp, stronger augmentation,
                 label_smoothing=0.10, gap monitor,
                 dynamic ablation table
