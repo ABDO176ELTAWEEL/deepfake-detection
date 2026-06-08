@@ -162,11 +162,7 @@ deepfake-detection/
 
 ---
 
-## GenAI Use Disclosure
-In line with the course policy, AI tools (Claude) were used for:
-- Debugging assistance after manual attempts to fix issues
-- Code review to identify bugs (e.g., data leakage in split, missing class weights)
-- Grammar and phrasing help in the report
+
 
 AI was **not** used to:
 - Generate experimental results or metric values
