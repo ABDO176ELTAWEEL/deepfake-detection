@@ -1,11 +1,13 @@
-# Development Log — Deepfake Face Detection
+# Development Log 
+Deepfake Face Detection
 **Project:** Deepfake Face Image Detection with Lightweight Convolutional Models  
 **Team:** Abdelrahman Ibrahim Kamal · Aya Noah · Esraa Mohamed — Group 3  
 **Course:** Computer Vision / Deep Learning  
 
 ---
 
-## Week 1 — Data & Preprocessing
+## Week 1 
+Data & Preprocessing
 **Dates:** Week 1  
 **Owner:** Student A (Abdelrahman)
 
@@ -34,7 +36,8 @@
 
 ---
 
-## Week 2 — Binary Baseline Training
+## Week 2 
+Binary Baseline Training
 **Dates:** Week 2  
 **Owner:** Student B (Aya) and student A (Abdelrahman)
 
@@ -85,7 +88,8 @@ frames_per_video = 20
 
 ---
 
-## Week 3 — Robustness Experiments & Multi-class Extension
+## Week 3 
+Robustness Experiments & Multi-class Extension
 **Dates:** Week 3  
 **Owners:** Student C (Esraa) — robustness · Student B (Aya) — multi-class
 
