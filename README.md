@@ -309,10 +309,10 @@ p_weighted = w1 * p_v1 + w2 * p_v2
 
 **Results on test set:**
 ```
-MobileNetV2 v1              69.42%   F1 0.577   AUC 0.662
-MobileNetV2 v2 (ours)       73.62%   F1 0.710   AUC 0.812
-Simple Ensemble             73.80%   F1 0.701   AUC 0.792
-Weighted Ensemble           74.06%   F1 0.707   AUC 0.796
+MobileNetV2 v1              66.38%   F1 0.613   AUC 0.662
+MobileNetV2 v2 (ours)       73.70%   F1 0.710   AUC 0.812
+Simple Ensemble             74.06%   F1 0.708   AUC 0.792
+Weighted Ensemble           72.86%   F1 0.709   AUC 0.796
 ```
 
 The weighted ensemble wins on accuracy. v2 wins on AUC, useful when ranking is more important than a hard threshold.
