@@ -24,7 +24,7 @@ This project implements a **complete deepfake detection pipeline** built on top 
 
 | Notebook | Task | Model | Classes |
 |---|---|---|---|
-| `deepfake_detection.ipynb` | Binary detection | MobileNetV2 | Real vs Fake |
+| `deepfake_detection_tuned.ipynb` | Binary detection | MobileNetV2 | Real vs Fake |
 | `deepfake_multiclass.ipynb` | Manipulation classification | EfficientNet-B0 + FrequencyBranch | Deepfakes / Face2Face / FaceSwap |
 
 **Key highlights:**
@@ -42,7 +42,7 @@ This project implements a **complete deepfake detection pipeline** built on top 
 ```
 your_project_folder/
 │
-├── deepfake_detection.ipynb        ← Notebook 1: Binary (Real vs Fake)
+├── deepfake_detection_tuned.ipynb        ← Notebook 1: Binary (Real vs Fake)
 ├── deepfake_multiclass.ipynb       ← Notebook 2: 3-Class manipulation type
 │
 ├── dataset_300/                    ← Extracted face frames
@@ -226,7 +226,7 @@ With `label_smoothing=0.10` - higher than the binary task, because Face2Face and
 
 ##  Baseline vs Final Binary Notebook
 
-The binary detection system (`deepfake_detection.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
+The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
 
 ### At a Glance
 
@@ -370,7 +370,7 @@ These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` add
 deepfake_detection_local_windows.ipynb   ← Baseline
     │  Changes: data scale only
     │
-deepfake_detection.ipynb                 ← Intermediate (this file)
+deepfake_detection_tuned.ipynb                 ← Intermediate (this file)
     │  Changes: class weights, ensemble, 5 visualizations
     │
 deepfake_multiclass.ipynb           ← Final
@@ -557,7 +557,7 @@ root_dir: str = r'C:\path\to\your\FaceForensics_300'
 
 ### Step 3  Run Notebook 1 (Binary)
 
-Open `deepfake_detection.ipynb` and run all cells in order:
+Open `deepfake_detection_tuned.ipynb` and run all cells in order:
 1. Imports and config
 2. Load official splits
 3. Extract frames (skip if already done: `skip_extract=True`)
