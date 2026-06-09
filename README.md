@@ -282,7 +282,7 @@ criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smooth
 
 ### 3. Ensemble (v1 + v2) - Added
 
-**Baseline:** Single model only  one architecture, one checkpoint.
+**Baseline:** Single model, only  one architecture, one checkpoint.
 
 **Final:** Two MobileNetV2 variants trained separately and combined:
 
@@ -290,7 +290,7 @@ criterion = nn.CrossEntropyLoss(weight=class_w, label_smoothing=cfg.label_smooth
 # v1 : simple head (trained on ~50 videos, loaded from external checkpoint)
 classifier: Dropout(0.2) → Linear(1280 → 2)
 
-# v2 : deep head (trained on 300 videos, current session)
+# v2: deep head (trained on 300 videos, current session)
 classifier: Dropout(0.3) → Linear(1280 → 256) → ReLU → Dropout(0.2) → Linear(256 → 2)
 ```
 
