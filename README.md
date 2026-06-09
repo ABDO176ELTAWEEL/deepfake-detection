@@ -392,7 +392,7 @@ deepfake_multiclass.ipynb           ← Final
 | CPU inference speed | Fast | Slightly slower |
 | Suitable for fine-grained texture | ✖️ | ✅ |
 
-EfficientNet-B0's compound scaling makes it significantly better at detecting subtle texture differences exactly what separates Face2Face from FaceSwap at the blending boundary level.
+EfficientNet-B0's compound scaling makes it significantly better at detecting subtle texture differences, exactly what separates Face2Face from FaceSwap at the blending boundary level.
 
 ### Why MobileNetV2 for Binary?
 
