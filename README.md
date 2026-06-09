@@ -226,7 +226,7 @@ With `label_smoothing=0.10` - higher than the binary task, because Face2Face and
 
 ##  Baseline vs Final Binary Notebook
 
-The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a minimal prototype (`deepfake_detection_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
+The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a minimal prototype (`deepfake_detection_baseline_local_windows.ipynb`). The table below shows **exactly** what changed and what stayed the same based on direct code comparison between the two files.
 
 ### At a Glance
 
