@@ -243,7 +243,7 @@ The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a mi
 | Ablation study table | ✖️ | ✅ *(hardcoded numbers)* |
 | Model search utility | ✖️ | ✅|
 
-> **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`multiclass_fake.ipynb`), not in this intermediate version.
+> **Note:** MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table were improvements planned and discussed but applied in the **fixed version** (`deepfake_multiclass.ipynb`), not in this intermediate version.
 
 ### 1. Dataset Scale  100 → 300 Videos, 10 → 20 Frames
 
