@@ -367,7 +367,7 @@ These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` add
 ### Three-Version Evolution Summary
 
 ```
-deepfake_detection_local_windows.ipynb   ← Baseline
+deepfake_detection_baseline_local_windows.ipynb   ← Baseline
     │  Changes: data scale only
     │
 deepfake_detection_tuned.ipynb                 ← Intermediate (this file)
