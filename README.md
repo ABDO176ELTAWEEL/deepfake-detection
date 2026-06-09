@@ -474,9 +474,9 @@ TEST acc 75.36% | f1 0.750 | auc 0.899 | groups 69
 
 | Metric | Frame-Level | Video-Level |
 |---|---|---|
-| Accuracy | ~85% | ~87% |
-| Macro-F1 | ~0.85 | ~0.87 |
-| Macro-AUC | ~0.97 | ~0.97 |
+| Accuracy | 91.38% | 97.10% |
+| Macro-F1 | 0.913 | 0.971 |
+| Macro-AUC | 0.984 | 0.993 |
 
 **Training curve highlights:**
 ```
