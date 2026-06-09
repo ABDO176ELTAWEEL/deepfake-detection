@@ -331,7 +331,7 @@ The simple ensemble wins on accuracy (74.06%). v2 wins on AUC (0.812); the weigh
 | **Grad-CAM** | Heatmap overlays on real and fake samples- shows which face regions trigger the decision |
 | **Ablation Study Table** | Side-by-side model comparison (v1, v2, simple ensemble, weighted ensemble) |
 
->  `plot_training_curves` is defined but **commented out** in the run cell - this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_fixed.ipynb`.
+>  `plot_training_curves` is defined but **commented out** in the run cell - this is because the `history` dict was not saved during training in this version. Fixed in `deepfake_detection_tuned.ipynb`.
 
 ### 5. Model Search Utility - Added
 
@@ -362,7 +362,7 @@ These properties are **identical** in both versions, worth noting because they a
 | `patience` | 4 |
 | `num_workers` | 0 |
 
-These unchanged properties are exactly what `deepfake_detection_fixed.ipynb` addresses, adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
+These unchanged properties are exactly what `deepfake_detection_tuned.ipynb` addresses, adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
 
 ### Three-Version Evolution Summary
 
