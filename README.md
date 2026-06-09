@@ -315,7 +315,7 @@ Simple Ensemble             74.06%   F1 0.708   AUC 0.792
 Weighted Ensemble           72.86%   F1 0.709   AUC 0.796
 ```
 
-The weighted ensemble wins on accuracy. v2 wins on AUC, useful when ranking is more important than a hard threshold.
+The simple ensemble wins on accuracy (74.06%). v2 wins on AUC (0.812); the weighted ensemble trades a little accuracy for a marginally higher AUC (0.796).
 
 ### 4. Visualizations - None → 5 Plots
 
@@ -457,10 +457,10 @@ This evaluation protocol, used in the original FF++ paper, is more meaningful fo
 
 | Model | Accuracy | Macro-F1 | AUC |
 |---|---|---|---|
-| MobileNetV2 v1 (simple head) | 69.42% | 0.577 | 0.662 |
-| MobileNetV2 v2 (deep head) | 73.62% | 0.710 | 0.812 |
-| Simple Ensemble (v1+v2) | 73.80% | 0.701 | 0.792 |
-| Weighted Ensemble | 74.06% | 0.707 | 0.796 |
+| MobileNetV2 v1 (simple head) | 66.38% | 0.613 | 0.662 |
+| MobileNetV2 v2 (deep head) | 73.70% | 0.710 | 0.812 |
+| Simple Ensemble (v1+v2) | 74.06% | 0.708 | 0.792 |
+| Weighted Ensemble | 72.86% | 0.709 | 0.796 |
 
 **Group-level (video-level) results:**
 ```
