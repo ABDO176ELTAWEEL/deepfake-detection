@@ -389,7 +389,6 @@ These properties are **identical** in both versions, worth noting because they a
 |---|---|
 | `label_smoothing` | 0.05 |
 | Augmentation pipeline | Resize → Flip → ColorJitter only |
-| Training loop | No gap monitor, no MixUp |
 | Model architecture | MobileNetV2, same classifier structure |
 | Stage 1/2 LR | `1e-3` / `1e-5` |
 | `patience` | 4 |
