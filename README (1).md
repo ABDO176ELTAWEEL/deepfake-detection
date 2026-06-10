@@ -269,6 +269,7 @@ The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a mi
 | Frames per video | **10** | **20** |
 | Total training frames | ~5,000 | ~30,000 |
 | `label_smoothing` | 0.05 | 0.05 *(unchanged)* |
+| tune_threshold default metric	'accuracy'|	'f1' changed | Optimises for balanced class performance, better for imbalanced data|
 | Class weights in loss | ✖️ | ✅ `[4.0, 1.0]` |
 | Ensemble (v1 + v2) | ✖️ | ✅ simple + weighted |
 | Error analysis plot | ✖️ | ✅ |
@@ -393,9 +394,8 @@ These properties are **identical** in both versions, worth noting because they a
 | Stage 1/2 LR | `1e-3` / `1e-5` |
 | `patience` | 4 |
 | `num_workers` | 0 |
-
-These unchanged properties are exactly what `deepfake_detection_tuned.ipynb` addresses, adding MixUp, stronger augmentation, label_smoothing=0.10, gap monitor, and dynamic ablation table on top of this version.
-
+| Class weights	[4.0, 1.0]	| [4.0, 1.0] (unchanged)|
+| Robustness eval	JPEG + Gaussian noise	Same (unchanged)|
 ### Three-Version Evolution Summary
 
 ```
