@@ -270,7 +270,6 @@ The binary detection system (`deepfake_detection_tuned.ipynb`) evolved from a mi
 | Total training frames | ~5,000 | ~30,000 |
 | `label_smoothing` | 0.05 | 0.05 *(unchanged)* |
 | tune_threshold default metric |	'accuracy'	|'f1' changed Optimises for balanced class performance, better for imbalanced data|
-| Class weights in loss | ✖️ | ✅ `[4.0, 1.0]` |
 | Ensemble (v1 + v2) | ✖️ | ✅ simple + weighted |
 | Error analysis plot | ✖️ | ✅ |
 | Grad-CAM plot | ✖️ | ✅ |
